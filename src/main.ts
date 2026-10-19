@@ -1,11 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './module/app.module.js';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { redisOptionsFactory } from './config/redis.config';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+
+  app.connectMicroservice<MicroserviceOptions>(redisOptionsFactory());
 
   app.setGlobalPrefix(config.get('HTTP_PREFIX')!);
 
