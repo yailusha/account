@@ -58,8 +58,6 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    return argon.verify(password, user.passwordHash, {
-      salt: Buffer.from(user.passwordSalt),
-    });
+    return argon.verify(password, user.passwordHash);
   }
 }
